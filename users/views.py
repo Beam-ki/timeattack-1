@@ -1,8 +1,9 @@
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework_simplejwt.views import TokenObtainPairView
 
-from users.serializers import UserSerializer
+from users.serializers import UserSerializer, CustomTokenObtainPairSerializer
 
 class UserView(APIView):
 	def post(self, request):
@@ -12,3 +13,8 @@ class UserView(APIView):
 			return Response({"message": "회원 가입이 완료되었습니다"}, status=status.HTTP_201_CREATED)
 		else:
 			return Response({"message":f"%{serializer.errors}"}, status=status.HTTP_400_BAD_REQUEST)
+
+# https://django-rest-framework-simplejwt.readthedocs.io/en/latest/customizing_token_claims.html
+class CustomTokenObtainPairView(TokenObtainPairView):
+	serializer_class = CustomTokenObtainPairSerializer
+
